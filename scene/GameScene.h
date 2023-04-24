@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -24,6 +25,9 @@ public: // メンバ関数
 	/// デストラクタ
 	/// </summary>
 	~GameScene();
+
+	//スプライト
+	Sprite* sprite_ = nullptr;
 
 	/// <summary>
 	/// 初期化
@@ -44,6 +48,19 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	uint32_t textureHandle_ = 0;
+	uint32_t soundDataHandle_ = 0;
+	uint32_t voiceHandle_ = 0;
+	
+	Model* model_ = nullptr;
+	
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
+
+	float inputFloat3[3] = {0, 0, 0};
+
+	DebugCamera* debugCamerar_ = nullptr;
+
 
 	/// <summary>
 	/// ゲームシーン用
