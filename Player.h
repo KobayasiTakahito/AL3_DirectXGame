@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Model.h"
 #include "WorldTransform.h"
+#include "input.h"
 
 class Player {
 public:
@@ -23,5 +24,6 @@ private:
 	uint32_t texturehandle_ = 0u;
 	//自キャラ
 	Player* player_ = nullptr;
-
+	//キーボード入植
+	Input* input_ = nullptr;
 };

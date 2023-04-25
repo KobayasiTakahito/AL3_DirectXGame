@@ -7,10 +7,30 @@ void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	model_ = model;
 	texturehandle_ = textureHandle;
 	worldTransform_.Initialize();
+	//シングルインスタンスを取得する
+	input_ = Input::GetInstance();
 }
    
 // 更新
-void Player::Update() {}
+void Player::Update() {
+	//キャラクターの移動ベクトル
+	Vector3 move = {0, 0, 0};
+	//キャラクターの移動速度
+	const float kChracterSpeed = 0.2f;
+	//押した方向で移動ベクトルを変更（左右）
+	if (input_->PushKey(DIK_LEFT)) {
+		move.x -= kChracterSpeed;
+	} else if (input_->PushKey(DIK_LEFT)) {
+		move.x += kChracterSpeed;
+	}
+	//押した方向で移動ベクトルを変更（上下）
+	if (input_->PushKey(DIK_UP)) {
+		move.y -= kChracterSpeed;
+	} else if (input_->PushKey(DIK_DOWN)) {
+		move.y += kChracterSpeed;
+	}
+}
+
 
 // 描画
 void Player::Draw(ViewProjection& viewprojection) {
