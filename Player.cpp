@@ -29,6 +29,8 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y += kChracterSpeed;
 	}
+	//座標ベクトルの加算
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_,move);
 }
 
 
