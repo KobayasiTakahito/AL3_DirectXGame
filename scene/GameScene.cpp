@@ -15,7 +15,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	//ファイル名を指定してテクスチャを読み込む
-	//textureHandle_ = TextureManager::Load();
+	textureHandle_ = TextureManager::Load("mario.jpg");
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	//ビュープロダクションの初期化
@@ -25,7 +25,7 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize();
+	player_->Initialize(model_,textureHandle_);
 
 }
 
@@ -44,7 +44,7 @@ void GameScene::Draw() {
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 
-	player_->Draw();
+	player_->Draw(viewProjection_);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
