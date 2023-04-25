@@ -41,10 +41,23 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	//テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	//ビュープロダクションの初期化
+	ViewProjection viewProjection_;
+	//３Dモデル
+	Model* model_ = nullptr;
+	
+
 	//自キャラ
 	Player* player_ = nullptr;
 
