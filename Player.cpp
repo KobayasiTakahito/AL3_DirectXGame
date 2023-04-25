@@ -15,5 +15,4 @@ void Player::Update() {}
 // 描画
 void Player::Draw(ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, texturehandle_);
-
 }
