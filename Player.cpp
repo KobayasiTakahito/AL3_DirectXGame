@@ -24,7 +24,7 @@ Vector3 Player::Vec3Add(Vector3 add1, Vector3 add2) {
 // 更新
 void Player::Update() {
 	//キャラクターの移動ベクトル
-	Vector3 move = {0.0f, 0.0f, 0.0f};
+	Vector3 move = {0, 0, 0};
 
 	//キャラクターの移動速度
 	const float kChracterSpeed = 5.0f;
@@ -47,7 +47,7 @@ void Player::Update() {
 	worldTransform_.translation_ = MakeTranslateMatrix()*/
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
-
+	
 }
 
 
