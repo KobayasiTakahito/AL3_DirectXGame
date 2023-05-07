@@ -23,6 +23,8 @@ public:
 		 return add3;
 	}
 
+
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
