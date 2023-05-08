@@ -50,7 +50,7 @@ void Player::Update() {
 	
 	//デバッグ
 	ImGui::Begin("Debug");
-	ImGui::SliderFloat3("float3", move, 0.0f, 1.0f);
+	ImGui::SliderFloat("player", , 0.0f, 1.0f);
 	ImGui::End();
 
 }
