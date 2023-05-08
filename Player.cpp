@@ -31,6 +31,23 @@ void Player::Update() {
 
 	//キャラクターの移動速度
 	const float kChracterSpeed = 0.3f;
+	//移動限界
+	const float kMoveLimiX = 30.0f;
+	const float kMoveLimiY = 18.0f;
+
+
+	float imputFloat3[3] = {
+	    worldTransform_.translation_.x, worldTransform_.translation_.y,
+	    worldTransform_.translation_.z};
+
+	// デバッグ
+	ImGui::Begin("Debug");
+	ImGui::SliderFloat3("player", imputFloat3, -30.0f, 30.0f);
+	ImGui::End();
+	worldTransform_.translation_.x = imputFloat3[0];
+	worldTransform_.translation_.y = imputFloat3[1];
+	worldTransform_.translation_.z = imputFloat3[2];
+
 	//押した方向で移動ベクトルを変更（左右）
 	if (input_->PushKey(DIK_LEFT)) {
 		move.x -= kChracterSpeed;
@@ -43,16 +60,20 @@ void Player::Update() {
 	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y += kChracterSpeed;
 	}
+
+	// 範囲を超えない処理
+	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimiX);
+	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimiX);
+	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimiY);
+	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimiY);
+
+
 	//座標ベクトルの加算
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_,move);
 	
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
 	
-	//デバッグ
-	ImGui::Begin("Debug");
-	ImGui::SliderFloat("player", , 0.0f, 1.0f);
-	ImGui::End();
-
+	
 }
 
 

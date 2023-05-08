@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -56,8 +57,11 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	//３Dモデル
 	Model* model_ = nullptr;
+	//デバッグカメラ有効
+	bool isDebugcameraActive_ = false;
+	//デバッグカメラの生成
+	DebugCamera* debugCamera_ = nullptr;
 	
-
 	//自キャラ
 	Player* player_ = nullptr;
 
