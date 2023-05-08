@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "input.h"
+#include "PlayerBullet.h"
 
 class Player {
 public:
@@ -14,8 +15,13 @@ public:
 	//描画
 	void Draw(ViewProjection &viewprojection);
 
-	//Vec３の加算
-	Vector3 Vec3Add(Vector3 add1, Vector3 add2);
+	//旋回
+	void Rotate();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
 
 
 
@@ -30,4 +36,7 @@ private:
 	Player* player_ = nullptr;
 	//キーボード入植
 	Input* input_ = nullptr;
+	//弾
+	PlayerBullet* bullet_ = nullptr;
+	
 };
