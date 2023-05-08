@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include <cassert>
 #include<world.h>
+#include "ImGuiManager.h"
 
 void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	//NULLポインタチェック
@@ -47,6 +48,11 @@ void Player::Update() {
 	
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
 	
+	//デバッグ
+	ImGui::Begin("Debug");
+	ImGui::SliderFloat3("float3", move, 0.0f, 1.0f);
+	ImGui::End();
+
 }
 
 
