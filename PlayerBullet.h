@@ -7,7 +7,7 @@
 class PlayerBullet {
 public:
 	///初期化
-	void Initialize(Model* model, const Vector3& position);
+	void Initialize(Model* model, const Vector3& position , const Vector3& velocity);
 
 	void Update();
 
@@ -21,4 +21,6 @@ public:
 	    Model* model_ = nullptr;
 	    // テクスチャハンドル
 	    uint32_t texturehandle_ = 0u;
+
+		Vector3 velocity_;
 };

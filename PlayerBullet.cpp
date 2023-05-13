@@ -1,9 +1,10 @@
 ﻿#include "PlayerBullet.h"
 #include <assert.h>
 #include "Vector3.h"
+#include "world.h"
 
 
-void PlayerBullet::Initialize(Model* model, const Vector3& position) { 
+void PlayerBullet::Initialize(Model* model, const Vector3& position ,const Vector3& velocity) { 
 	//NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -15,8 +16,16 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, position);
 	worldTransform_.UpdateMatrix();
+
+	velocity_ = velocity;
 }
 void PlayerBullet::Update() {
+	worldTransform_.UpdateMatrix();
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
+	worldTransform_.matWorld_ = MakeAffineMatrix(
+	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	
+
 
 }
 

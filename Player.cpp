@@ -70,6 +70,8 @@ void Player::Update() {
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
 	
 	Player::Attack();
+	
+
 	if (bullet_) {
 		bullet_->Update();
 	}
@@ -105,10 +107,15 @@ void Player::Attack() {
 			delete bullet_;
 			bullet_ = nullptr;
 		}*/
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 Velocity(0, 0, kBulletSpeed);
+
+		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
 
 	//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,Velocity);
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 
