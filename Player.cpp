@@ -3,6 +3,7 @@
 #include<world.h>
 #include "ImGuiManager.h"
 
+
 void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	//NULLポインタチェック
 	assert(model);
@@ -72,6 +73,9 @@ void Player::Update() {
 	if (bullet_) {
 		bullet_->Update();
 	}
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
+	}
 }
 
 //旋回
@@ -86,15 +90,31 @@ void Player::Rotate() {
 	}
 }
 
+//デストラクタ
+Player::~Player() { 
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+		bullet = nullptr;
+	}
+}
+
 //攻撃
 void Player::Attack() { 
 	if (input_->PushKey(DIK_SPACE)) {
+		/*if (bullet_) {
+			delete bullet_;
+			bullet_ = nullptr;
+		}*/
+
 	//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
+		// 弾を登録する
+		bullets_.push_back(newBullet);
 
 		bullet_ = newBullet;
 	}
+	
 }
 
 // 描画
@@ -102,5 +122,8 @@ void Player::Draw(ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, texturehandle_);
 	if (bullet_) {
 		bullet_->Draw(viewprojection);
+	}
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewprojection);
 	}
 }
