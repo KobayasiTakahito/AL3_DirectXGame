@@ -11,10 +11,10 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 
 	// テクスチャ読み込む
 	texturehandle_ = TextureManager::Load("enemy.png");
-
+	Vector3 tmp = {0,5,100};
 	// ワールドトランスフォーの初期化
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, position);
+	worldTransform_.translation_ = Vec3Add(Vec3Add(worldTransform_.translation_, position),tmp);
 	worldTransform_.UpdateMatrix();
 
 	velocity_ = velocity;
