@@ -4,6 +4,10 @@
 #include "input.h"
 #include "Vector3.h"
 
+enum class Phase {
+	Approch,
+	Leave,
+};
 
 class Enemy {
 public:
@@ -22,4 +26,7 @@ private:
 	// テクスチャハンドル
 	uint32_t texturehandle_ = 0u;
 	Vector3 velocity_;
+	//フェーズ
+	Phase phase_ = Phase::Approch;
 };
+

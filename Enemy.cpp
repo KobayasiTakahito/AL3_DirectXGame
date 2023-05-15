@@ -18,13 +18,29 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	worldTransform_.UpdateMatrix();
 
 	velocity_ = velocity;
+
 }
 void Enemy::Update() {
+	Vector3 velocity = {1, 1, 0};
+	switch (phase_) {
+	case Phase::Approch:
+		worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
+		if (worldTransform_.translation_.z < 0.0f) {
+			phase_ = Phase::Leave;
+		}
+		break;
+	case Phase::Leave:
+
+		worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity);
+
+		break;
+	
+	}
 	worldTransform_.UpdateMatrix();
-	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-}
+
+	}
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
