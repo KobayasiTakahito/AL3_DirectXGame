@@ -25,10 +25,14 @@ void PlayerBullet::Update() {
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	
-
+	//時間経過でデス
+	if (--dethTimer_ <= 0) {
+		isDead_ = true;
+	}
 
 }
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
+
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
 }

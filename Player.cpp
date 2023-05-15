@@ -93,6 +93,14 @@ void Player::Update() {
 	if (enemy_) {
 		enemy_->Update();
 	}
+
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 }
 
 //旋回
@@ -143,11 +151,12 @@ void Player::Attack() {
 void Player::Draw(ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, texturehandle_);
 	if (bullet_) {
-		bullet_->Draw(viewprojection);
+		//bullet_->Draw(viewprojection);
+		for (PlayerBullet* bullet : bullets_) {
+			bullet->Draw(viewprojection);
+		}
 	}
-	for (PlayerBullet* bullet : bullets_) {
-		bullet->Draw(viewprojection);
-	}
+	
 	if (enemy_) {
 		enemy_->Draw(viewprojection);
 	}
