@@ -7,6 +7,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete player_;
+	delete enemy_;
 	delete model_;
 	delete debugCamera_;
 }
@@ -28,6 +29,10 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_,textureHandle_);
+	//敵キャラの生成
+	enemy_ = new Enemy();
+	//敵キャラの初期化
+	//enemy_->Initialize(model_,textureHandle_)
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1270, 820);
 	//軸方向の表示を有効にする

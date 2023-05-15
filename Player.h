@@ -4,7 +4,7 @@
 #include "input.h"
 #include "PlayerBullet.h"
 #include <list>
-
+#include "Enemy.h"
 class Player {
 public:
 	//初期化
@@ -45,5 +45,7 @@ private:
 	Input* input_ = nullptr;
 	//弾
 	PlayerBullet* bullet_ = nullptr;
+	//敵
+	Enemy* enemy_ = nullptr;
 	
 };

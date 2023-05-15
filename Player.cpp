@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include "Enemy.h"
 #include <cassert>
 #include<world.h>
 #include "ImGuiManager.h"
@@ -12,6 +13,15 @@ void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	worldTransform_.Initialize();
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
+
+	// 敵キャラ
+
+	const float kEnemySpeed = -1.0f;
+	Vector3 Velocity(0, 0, kEnemySpeed);
+	Enemy* newEnemy = new Enemy();
+	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
+
+	enemy_ = newEnemy;
 }
 
 
@@ -78,6 +88,11 @@ void Player::Update() {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
+	
+
+	if (enemy_) {
+		enemy_->Update();
+	}
 }
 
 //旋回
@@ -132,5 +147,8 @@ void Player::Draw(ViewProjection& viewprojection) {
 	}
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewprojection);
+	}
+	if (enemy_) {
+		enemy_->Draw(viewprojection);
 	}
 }
