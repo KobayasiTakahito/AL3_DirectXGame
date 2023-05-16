@@ -38,10 +38,17 @@ void GameScene::Initialize() {
 	//軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	//// 敵キャラ
+	const float kEnemySpeed = -1.0f;
+	Vector3 Velocity(0, 0, kEnemySpeed);
+	Enemy* newEnemy = new Enemy();
+	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
+	enemy_ = newEnemy;
 }
 
 void GameScene::Update() {
 	player_->Update();
+	
 	debugCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
@@ -58,6 +65,12 @@ void GameScene::Update() {
 	} else {
 		viewProjection_.UpdateMatrix();
 	}
+
+	
+	enemy_->Update();
+	
+
+	
 }
 
 void GameScene::Draw() {
@@ -85,6 +98,9 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 	player_->Draw(viewProjection_);
+	
+	enemy_->Draw(viewProjection_);
+	
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる

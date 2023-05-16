@@ -16,7 +16,7 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = Vec3Add(Vec3Add(worldTransform_.translation_, position),tmp);
 	worldTransform_.UpdateMatrix();
-
+	
 	velocity_ = velocity;
 
 }

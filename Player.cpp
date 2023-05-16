@@ -14,13 +14,7 @@ void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
 
-	// 敵キャラ
-
-	const float kEnemySpeed = -1.0f;
-	Vector3 Velocity(0, 0, kEnemySpeed);
-	Enemy* newEnemy = new Enemy();
-	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
-	enemy_ = newEnemy;
+	
 }
 
 
@@ -89,17 +83,6 @@ void Player::Update() {
 	}
 	
 
-	if (enemy_) {
-		enemy_->Update();
-	}
-
-	bullets_.remove_if([](PlayerBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
 }
 
 //旋回
@@ -156,7 +139,5 @@ void Player::Draw(ViewProjection& viewprojection) {
 		}
 	}
 	
-	if (enemy_) {
-		enemy_->Draw(viewprojection);
-	}
+	
 }
