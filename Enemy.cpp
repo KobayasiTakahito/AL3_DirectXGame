@@ -42,6 +42,37 @@ void Enemy::Update() {
 
 	}
 
+// 攻撃
+    void Enemy::Fire() {
+	
+		/*if (bullet_) {
+		    delete bullet_;
+		    bullet_ = nullptr;
+		}*/
+		// 弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 Velocity(0, 0, kBulletSpeed);
+
+		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
+
+		// 弾を生成し、初期化
+	    EnemyBullet* newBullet = new EnemyBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_, Velocity);
+		// 弾を登録する
+		bullets_.push_back(newBullet);
+
+		bullet_ = newBullet;
+	}
+    
+
+
+
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
+	    if (bullet_) {
+		// bullet_->Draw(viewprojection);
+		for (EnemyBullet* bullet : bullets_) {
+			bullet->Draw(viewProjection);
+		}
+	    }
 }

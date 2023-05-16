@@ -2,7 +2,9 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "input.h"
+#include <list>
 #include "Vector3.h"
+#include "EnemyBullet.h"
 
 enum class Phase {
 	Approch,
@@ -18,6 +20,10 @@ public:
 
 	void Draw(const ViewProjection& viewProjection);
 
+	void Fire();
+	// 弾
+	std::list<EnemyBullet*> bullets_;
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -28,5 +34,8 @@ private:
 	Vector3 velocity_;
 	//フェーズ
 	Phase phase_ = Phase::Approch;
+	// 弾
+	EnemyBullet* bullet_ = nullptr;
+
 };
 
