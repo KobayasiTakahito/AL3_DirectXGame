@@ -25,9 +25,9 @@ void Enemy::Update() {
 	switch (phase_) {
 	case Phase::Approch:
 		worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
-		if (worldTransform_.translation_.z < 0.0f) {
+		/*if (worldTransform_.translation_.z < 0.0f) {
 			phase_ = Phase::Leave;
-		}
+		}*/
 		break;
 	case Phase::Leave:
 
@@ -36,10 +36,28 @@ void Enemy::Update() {
 		break;
 	
 	}
+
 	worldTransform_.UpdateMatrix();
 	worldTransform_.matWorld_ = MakeAffineMatrix(
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	Enemy::Firetime();
 
+	if (bullet_) {
+		bullet_->Update();
+	}
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
+	
+
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 	}
 
 // 攻撃
@@ -50,7 +68,7 @@ void Enemy::Update() {
 		    bullet_ = nullptr;
 		}*/
 		// 弾の速度
-		const float kBulletSpeed = 1.0f;
+		const float kBulletSpeed = -2.0f;
 		Vector3 Velocity(0, 0, kBulletSpeed);
 
 		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
@@ -64,7 +82,13 @@ void Enemy::Update() {
 		bullet_ = newBullet;
 	}
     
-
+	void Enemy::Firetime() {
+	    FireTimer_--;
+	    if (FireTimer_ <= 0) {
+		Fire();
+		FireTimer_ = kFireInterval;
+	    }
+    }
 
 
 void Enemy::Draw(const ViewProjection& viewProjection) {

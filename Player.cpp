@@ -20,7 +20,6 @@ void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	Vector3 Velocity(0, 0, kEnemySpeed);
 	Enemy* newEnemy = new Enemy();
 	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
-
 	enemy_ = newEnemy;
 }
 
