@@ -22,7 +22,7 @@ void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& vel
 
 }
 void Enemy::Update() {
-	Vector3 velocity = {1, 1, 0};
+	Vector3 velocity = {0.0f, 0.0f, 0.0f};
 	switch (phase_) {
 	case Phase::Approch:
 		worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
@@ -39,8 +39,7 @@ void Enemy::Update() {
 	}
 
 	worldTransform_.UpdateMatrix();
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	Enemy::Firetime();
 
 	

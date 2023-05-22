@@ -38,7 +38,7 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 	//// 敵キャラ
-	const float kEnemySpeed = -1.0f;
+	const float kEnemySpeed = -0.1f;
 	Vector3 Velocity(0, 0, kEnemySpeed);
 	Enemy* newEnemy = new Enemy();
 	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
