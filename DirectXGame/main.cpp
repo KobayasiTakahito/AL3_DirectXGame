@@ -20,7 +20,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow();
+	win->CreateGameWindow(L"LD2A_05_コバヤシ_タカヒト_AL3");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
@@ -78,6 +78,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		axisIndicator->Update();
 		// ImGui受付終了
 		imguiManager->End();
+
+		
 
 		// 描画開始
 		dxCommon->PreDraw();

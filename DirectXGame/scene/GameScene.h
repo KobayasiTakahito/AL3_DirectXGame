@@ -8,6 +8,10 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Player.h"
+#include "DebugCamera.h"
+#include "Enemy.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -40,10 +44,30 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	//テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	//ビュープロダクションの初期化
+	ViewProjection viewProjection_;
+	//３Dモデル
+	Model* model_ = nullptr;
+	//デバッグカメラ有効
+	bool isDebugcameraActive_ = false;
+	//デバッグカメラの生成
+	DebugCamera* debugCamera_ = nullptr;
+	
+	//自キャラ
+	Player* player_ = nullptr;
+	//敵キャラ
+	Enemy* enemy_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
