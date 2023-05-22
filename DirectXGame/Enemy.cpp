@@ -43,9 +43,7 @@ void Enemy::Update() {
 	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	Enemy::Firetime();
 
-	if (bullet_) {
-		bullet_->Update();
-	}
+	
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
 	}
@@ -64,17 +62,15 @@ void Enemy::Update() {
 // 攻撃
     void Enemy::Fire() {
 	assert(player_);
-		/*if (bullet_) {
-		    delete bullet_;
-		    bullet_ = nullptr;
-		}*/
+		
 		// 弾の速度
-		const float kBulletSpeed = -2.0f;
+		const float kBulletSpeed = -0.01f;
 	Vector3 playerVec = player_->GetWorldPos();
-	    Vector3 enemyVec = GetWorldPosition();
-	Vector3 c = Vec3Sub(enemyVec, playerVec);
+	Vector3 enemyVec = GetWorldPosition();
+	Vector3 c = Vec3Sub(playerVec, enemyVec);
+	c = Vec3Normalize(c);
 
-		Vector3 Velocity(0, 0, kBulletSpeed);
+		Vector3 Velocity(Vec3Add(c,{0.0f,0.0f,kBulletSpeed}));
 		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
@@ -83,7 +79,7 @@ void Enemy::Update() {
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 
-		bullet_ = newBullet;
+		
 	}
     
 	void Enemy::Firetime() {
@@ -97,12 +93,11 @@ void Enemy::Update() {
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
-	    if (bullet_) {
-		// bullet_->Draw(viewprojection);
+	    
 		for (EnemyBullet* bullet : bullets_) {
 			bullet->Draw(viewProjection);
 		}
-	    }
+	    
 }
 
 Vector3 Enemy::GetWorldPosition() {

@@ -41,7 +41,7 @@ private:
 	//テクスチャハンドル
 	uint32_t texturehandle_ = 0u;
 	//自キャラ
-	Player* player_ = nullptr;
+	
 	//キーボード入植
 	Input* input_ = nullptr;
 	//弾

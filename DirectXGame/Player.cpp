@@ -147,9 +147,9 @@ Vector3 Player::GetWorldPos() {
 
 	Vector3 worldPos;
 
-	worldPos.x = player_->worldTransform_.translation_.x;
-	worldPos.y = player_->worldTransform_.translation_.y;
-	worldPos.z = player_->worldTransform_.translation_.z;
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
 
 	return worldPos;
 }

@@ -29,9 +29,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_,textureHandle_);
-	//敵キャラの生成
-	enemy_ = new Enemy();
-	enemy_->SetPlayer(player_);
+	
 	//敵キャラの初期化
 	//enemy_->Initialize(model_,textureHandle_)
 	//デバッグカメラの生成
@@ -45,6 +43,7 @@ void GameScene::Initialize() {
 	Enemy* newEnemy = new Enemy();
 	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
 	enemy_ = newEnemy;
+	enemy_->SetPlayer(player_);
 }
 
 void GameScene::Update() {

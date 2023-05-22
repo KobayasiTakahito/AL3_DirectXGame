@@ -1,5 +1,5 @@
 #include "Vector3.h"
-
+#include <math.h>
 
 Vector3 Vec3Add(Vector3 add1, Vector3 add2) {
 	Vector3 add3;
@@ -27,3 +27,14 @@ Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) {
 }
 
 
+Vector3 Vec3Normalize(Vector3& norm) { 
+	float length = sqrtf((norm.x * norm.x) + (norm.y * norm.y) + (norm.z * norm.z)); 
+	if (length > 0) {
+		length = 1 / length;
+	}
+	Vector3 mag;
+	mag.x = norm.x * length;
+	mag.y = norm.y * length;
+	mag.z = norm.z * length;
+	return mag;
+}
