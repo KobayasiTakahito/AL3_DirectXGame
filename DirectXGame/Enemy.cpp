@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Vector3.h"
 #include "world.h"
+#include"Player.h"
 
 
 void Enemy::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -62,15 +63,18 @@ void Enemy::Update() {
 
 // 攻撃
     void Enemy::Fire() {
-	
+	assert(player_);
 		/*if (bullet_) {
 		    delete bullet_;
 		    bullet_ = nullptr;
 		}*/
 		// 弾の速度
 		const float kBulletSpeed = -2.0f;
-		Vector3 Velocity(0, 0, kBulletSpeed);
+	Vector3 playerVec = player_->GetWorldPos();
+	    Vector3 enemyVec = GetWorldPosition();
+	Vector3 c = Vec3Sub(enemyVec, playerVec);
 
+		Vector3 Velocity(0, 0, kBulletSpeed);
 		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
@@ -99,4 +103,14 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 			bullet->Draw(viewProjection);
 		}
 	    }
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	    Vector3 worldPos;
+
+	    worldPos.x = worldTransform_.translation_.x;
+	    worldPos.y = worldTransform_.translation_.y;
+	    worldPos.z = worldTransform_.translation_.z;
+
+	    return worldPos;
 }

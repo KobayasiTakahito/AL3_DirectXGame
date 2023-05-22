@@ -10,6 +10,7 @@ enum class Phase {
 	Approch,
 	Leave,
 };
+class Player;
 
 class Enemy {
 public:
@@ -24,6 +25,9 @@ public:
 
 	void Firetime();
 
+	void SetPlayer(Player* player) { player_ = player; }
+
+	Vector3 GetWorldPosition();
 
 	// 弾
 	std::list<EnemyBullet*> bullets_;
@@ -43,6 +47,9 @@ private:
 	EnemyBullet* bullet_ = nullptr;
 	//発射タイマー
 	int32_t FireTimer_ = 0;
+
+	//自キャラ
+	Player* player_ = nullptr;
 
 };
 

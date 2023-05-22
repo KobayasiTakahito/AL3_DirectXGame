@@ -20,7 +20,8 @@ public:
 	void Rotate();
 	//デストラクタ
 	~Player();
-
+	//ワールド座標を入れる変数
+	Vector3 GetWorldPos();
 
 
 	/// <summary>
