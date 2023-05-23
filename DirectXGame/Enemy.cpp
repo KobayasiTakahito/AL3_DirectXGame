@@ -45,6 +45,7 @@ void Enemy::Update() {
 	
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
+
 	}
 
 	
