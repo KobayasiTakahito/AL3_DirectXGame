@@ -22,6 +22,8 @@ public:
 	~Player();
 	//ワールド座標を入れる変数
 	Vector3 GetWorldPos();
+	//衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
 
 
 	/// <summary>
@@ -31,8 +33,8 @@ public:
 
 	//弾
 	std::list<PlayerBullet*> bullets_;
-
-
+	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+	
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;

@@ -73,6 +73,35 @@ void GameScene::Update() {
 	
 }
 
+void GameScene::CheckAllColision() { 
+	//判定対象AとBの座標
+	Vector3 posA, posB;
+
+	//自弾リストの取得
+	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	//敵弾リストの取得
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+	#pragma region
+	posA = player_->GetWorldPos();
+
+	for (EnemyBullet* bullet : enemyBullets) {
+		posB = bullet->GetWorldPosition();
+		if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.x), 2) + pow((posB.z - posA.z), 2) <=pow(2, 2)) {
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+	#pragma endregion
+
+	#pragma region
+    #pragma endregion
+
+	#pragma region
+    #pragma endregion
+
+}
+
 void GameScene::Draw() {
 
 	// コマンドリストの取得

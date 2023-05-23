@@ -153,3 +153,7 @@ Vector3 Player::GetWorldPos() {
 
 	return worldPos;
 }
+// 衝突を検出したら呼び出されるコールバック関数
+void Player::OnCollision() {
+
+}

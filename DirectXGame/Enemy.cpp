@@ -94,9 +94,10 @@ void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
 	    
 		for (EnemyBullet* bullet : bullets_) {
+		
 			bullet->Draw(viewProjection);
-		}
-	    
+		
+	}
 }
 
 Vector3 Enemy::GetWorldPosition() {
@@ -107,4 +108,8 @@ Vector3 Enemy::GetWorldPosition() {
 	    worldPos.z = worldTransform_.translation_.z;
 
 	    return worldPos;
+}
+// 衝突を検出したら呼び出されるコールバック関数
+void Enemy::OnCollision() {
+
 }

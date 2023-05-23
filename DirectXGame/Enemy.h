@@ -28,9 +28,13 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 
 	Vector3 GetWorldPosition();
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
 
 	// 弾
 	std::list<EnemyBullet*> bullets_;
+	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 	static const int kFireInterval = 60;
 
 private:
