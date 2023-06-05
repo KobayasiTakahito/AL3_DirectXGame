@@ -46,8 +46,7 @@ private:
 	
 	//キーボード入植
 	Input* input_ = nullptr;
-	//弾
-	PlayerBullet* bullet_ = nullptr;
+	
 	//敵
 	Enemy* enemy_ = nullptr;
 	

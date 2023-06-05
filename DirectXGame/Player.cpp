@@ -75,13 +75,19 @@ void Player::Update() {
 	Player::Attack();
 	
 
-	if (bullet_) {
-		bullet_->Update();
-	}
+	//if (bullet_) {
+	//	bullet_->Update();
+	//}
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-	
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
 }
 
@@ -124,7 +130,7 @@ void Player::Attack() {
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 
-		bullet_ = newBullet;
+		
 	}
 	
 }
@@ -132,12 +138,11 @@ void Player::Attack() {
 // 描画
 void Player::Draw(ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, texturehandle_);
-	if (bullet_) {
-		//bullet_->Draw(viewprojection);
+	
 		for (PlayerBullet* bullet : bullets_) {
 			bullet->Draw(viewprojection);
 		}
-	}
+	
 	
 	
 }

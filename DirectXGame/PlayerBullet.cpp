@@ -30,6 +30,8 @@ void PlayerBullet::Update() {
 		isDead_ = true;
 	}
 
+	
+
 }
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
@@ -39,4 +41,14 @@ void PlayerBullet::Draw(const ViewProjection& viewProjection) {
 // 衝突を検出したら呼び出されるコールバック関数
 void PlayerBullet::OnCollision() { 
 	isDead_ = true;
+}
+
+Vector3 PlayerBullet::GetWorldPosition() {
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
 }

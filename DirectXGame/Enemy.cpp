@@ -86,6 +86,7 @@ void Enemy::Update() {
 	    FireTimer_--;
 	    if (FireTimer_ <= 0) {
 		Fire();
+		
 		FireTimer_ = kFireInterval;
 	    }
     }

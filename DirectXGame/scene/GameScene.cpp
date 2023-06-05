@@ -69,7 +69,7 @@ void GameScene::Update() {
 	
 	enemy_->Update();
 	
-
+	GameScene::CheckAllColision();
 	
 }
 
@@ -78,7 +78,7 @@ void GameScene::CheckAllColision() {
 	Vector3 posA, posB;
 
 	//自弾リストの取得
-	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	//敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
@@ -87,7 +87,9 @@ void GameScene::CheckAllColision() {
 
 	for (EnemyBullet* bullet : enemyBullets) {
 		posB = bullet->GetWorldPosition();
-		if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.x), 2) + pow((posB.z - posA.z), 2) >=pow(2, 2)) {
+		float L = float(pow((posB.x - posA.x), 2)) + float(pow((posB.y - posA.y), 2)) +
+		          float(pow((posB.z - posA.z), 2)); 
+		if (L <= 8.0f) {
 			player_->OnCollision();
 			bullet->OnCollision();
 		}
@@ -95,9 +97,33 @@ void GameScene::CheckAllColision() {
 	#pragma endregion
 
 	#pragma region
+	posA = enemy_->GetWorldPosition();
+
+	for (PlayerBullet* bullet : playerBullets) {
+		posB = bullet->GetWorldPosition();
+		float L = float(pow((posB.x - posA.x), 2)) + float(pow((posB.y - posA.y), 2)) +
+		          float(pow((posB.z - posA.z), 2));
+		if (L <= 8.0f) {
+			enemy_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
     #pragma endregion
 
 	#pragma region
+	for (PlayerBullet* Pbullet : playerBullets) {
+		for (EnemyBullet* Ebullet : enemyBullets) {
+			posA = Pbullet->GetWorldPosition();
+			posB = Ebullet->GetWorldPosition();
+			float L = float(pow((posB.x - posA.x), 2)) + float(pow((posB.y - posA.y), 2)) +
+			          float(pow((posB.z - posA.z), 2));
+			if (L <= 8.0f) {
+				Pbullet->OnCollision();
+				Ebullet->OnCollision();
+			}
+
+		}
+	}
     #pragma endregion
 
 }
