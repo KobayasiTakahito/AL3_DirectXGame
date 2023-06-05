@@ -3,6 +3,7 @@
 #include <cassert>
 #include "AxisIndicator.h"
 
+
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
@@ -10,6 +11,8 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete model_;
 	delete debugCamera_;
+	delete skydome_;
+	delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -25,6 +28,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	//3Dモデルの生成
 	model_ = Model::Create();
+	modelSkydome_ = Model::CreateFromOBJ("tama", true);
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
@@ -44,11 +48,17 @@ void GameScene::Initialize() {
 	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
 	enemy_ = newEnemy;
 	enemy_->SetPlayer(player_);
+
+	//背景
+	skydome_ = new Skydome();
+	skydome_->Initializa(modelSkydome_);
+
 }
 
 void GameScene::Update() {
 	player_->Update();
-	
+	skydome_->Update();
+
 	debugCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
@@ -126,6 +136,7 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
+	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	
 	enemy_->Draw(viewProjection_);
