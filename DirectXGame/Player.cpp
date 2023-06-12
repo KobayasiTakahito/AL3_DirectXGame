@@ -23,8 +23,7 @@ void Player::Initialize(Model* model, uint32_t &textureHandle ,Vector3 pos) {
 void Player::Update() {
 	//キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
-	//行列指定バッファ
-	worldTransform_.UpdateMatrix();
+	
 
 	//キャラクターの移動速度
 	const float kChracterSpeed = 0.3f;
@@ -70,8 +69,10 @@ void Player::Update() {
 	//座標ベクトルの加算
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_,move);
 	
-	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_,worldTransform_.rotation_,worldTransform_.translation_);
 	
+	// 行列指定バッファ
+	worldTransform_.UpdateMatrix();
+
 	Player::Attack();
 	
 
@@ -108,14 +109,10 @@ Player::~Player() {
 //攻撃
 void Player::Attack() { 
 	if (input_->PushKey(DIK_SPACE)) {
-		/*if (bullet_) {
-			delete bullet_;
-			bullet_ = nullptr;
-		}*/
+	
 		//弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 Velocity(0, 0, kBulletSpeed);
-
 		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
 
 	//弾を生成し、初期化

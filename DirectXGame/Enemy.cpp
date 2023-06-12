@@ -39,7 +39,7 @@ void Enemy::Update() {
 	}
 
 	worldTransform_.UpdateMatrix();
-	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	
 	Enemy::Firetime();
 
 	

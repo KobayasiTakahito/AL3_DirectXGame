@@ -60,9 +60,10 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	player_->Update();
 	skydome_->Update();
 	railCamera_->Update();
+	player_->Update();
+	enemy_->Update();
 
 	debugCamera_->Update();
 #ifdef _DEBUG
@@ -88,7 +89,6 @@ void GameScene::Update() {
 	
 	
 
-	enemy_->Update();
 	
 
 	
