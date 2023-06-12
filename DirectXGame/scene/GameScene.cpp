@@ -49,7 +49,7 @@ void GameScene::Initialize() {
 	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
 	enemy_ = newEnemy;
 	enemy_->SetPlayer(player_);
-
+	enemy_->SetGameScene(this);
 	//背景
 	skydome_ = new Skydome();
 	skydome_->Initializa(modelSkydome_);
@@ -95,7 +95,7 @@ void GameScene::CheckAllColision() {
 	//自弾リストの取得
 	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	//敵弾リストの取得
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = GetBullets();
 
 	#pragma region
 	posA = player_->GetWorldPos();
@@ -145,7 +145,10 @@ void GameScene::Draw() {
 	player_->Draw(viewProjection_);
 	
 	enemy_->Draw(viewProjection_);
-	
+	for (EnemyBullet* bullet : bullets_) {
+
+		bullet->Draw(viewProjection_);
+	}
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
@@ -167,4 +170,9 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
+	//リストに追加	
+	bullets_.push_back(enemyBullet);
 }

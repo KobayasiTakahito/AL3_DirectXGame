@@ -43,20 +43,7 @@ void Enemy::Update() {
 	Enemy::Firetime();
 
 	
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-
-	}
-
 	
-
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
 	}
 
 // 攻撃
@@ -76,8 +63,7 @@ void Enemy::Update() {
 		// 弾を生成し、初期化
 	    EnemyBullet* newBullet = new EnemyBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_, Velocity);
-		// 弾を登録する
-		bullets_.push_back(newBullet);
+		
 
 		
 	}
@@ -94,11 +80,7 @@ void Enemy::Update() {
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
 	    
-		for (EnemyBullet* bullet : bullets_) {
 		
-			bullet->Draw(viewProjection);
-		
-	}
 }
 
 Vector3 Enemy::GetWorldPosition() {

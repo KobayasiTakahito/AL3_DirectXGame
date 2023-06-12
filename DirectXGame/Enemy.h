@@ -6,11 +6,13 @@
 #include "Vector3.h"
 #include "EnemyBullet.h"
 
+
 enum class Phase {
 	Approch,
 	Leave,
 };
 class Player;
+class GameScene;
 
 class Enemy {
 public:
@@ -31,12 +33,10 @@ public:
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
-
-	// 弾
-	std::list<EnemyBullet*> bullets_;
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 	static const int kFireInterval = 60;
 
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+	
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -47,13 +47,14 @@ private:
 	Vector3 velocity_;
 	//フェーズ
 	Phase phase_ = Phase::Approch;
-	// 弾
-	EnemyBullet* bullet_ = nullptr;
+	
 	//発射タイマー
 	int32_t FireTimer_ = 0;
 
 	//自キャラ
 	Player* player_ = nullptr;
+	//ゲームシーン
+	GameScene* gameScene_ = nullptr; 
 
 };
 
