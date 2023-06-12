@@ -64,6 +64,10 @@ void GameScene::Update() {
 	railCamera_->Update();
 	player_->Update();
 	enemy_->Update();
+	for (EnemyBullet* bullet : bullets_) {
+
+		bullet->Update();
+	}
 
 	debugCamera_->Update();
 #ifdef _DEBUG

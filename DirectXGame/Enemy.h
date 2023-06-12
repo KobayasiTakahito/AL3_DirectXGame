@@ -11,7 +11,9 @@ enum class Phase {
 	Approch,
 	Leave,
 };
+
 class Player;
+
 class GameScene;
 
 class Enemy {

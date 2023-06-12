@@ -58,11 +58,9 @@ public: // メンバ関数
 
 	void AddEnemyBullet(EnemyBullet* enemyBullet);
 
-	// 弾
-	std::list<EnemyBullet*> bullets_;
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 	
-
+	
+		const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -93,7 +91,8 @@ private: // メンバ変数
 	//レールカメラ
 	RailCamera* railCamera_ = nullptr;
 	// 弾
-	EnemyBullet* bullet_ = nullptr;
+	std::list<EnemyBullet*> bullets_;
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

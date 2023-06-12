@@ -1,4 +1,5 @@
 ﻿#include "Enemy.h"
+#include "GameScene.h"
 #include <assert.h>
 #include "Vector3.h"
 #include "world.h"
@@ -60,10 +61,13 @@ void Enemy::Update() {
 		Vector3 Velocity(Vec3Add(c,{0.0f,0.0f,kBulletSpeed}));
 		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
 
+
 		// 弾を生成し、初期化
 	    EnemyBullet* newBullet = new EnemyBullet();
+		
 		newBullet->Initialize(model_, worldTransform_.translation_, Velocity);
 		
+	gameScene_->AddEnemyBullet(newBullet);
 
 		
 	}
