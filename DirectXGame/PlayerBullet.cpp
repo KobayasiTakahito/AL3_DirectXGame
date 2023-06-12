@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Vector3.h"
 #include "world.h"
+#include "Player.h"
 
 
 void PlayerBullet::Initialize(Model* model, const Vector3& position ,const Vector3& velocity) { 
@@ -20,6 +21,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position ,const Vecto
 	velocity_ = velocity;
 }
 void PlayerBullet::Update() {
+	
 	worldTransform_.UpdateMatrix();
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, velocity_);
 	worldTransform_.matWorld_ = MakeAffineMatrix(
@@ -33,7 +35,7 @@ void PlayerBullet::Update() {
 }
 
 void PlayerBullet::Draw(const ViewProjection& viewProjection) {
-
+	
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
 }
 // 衝突を検出したら呼び出されるコールバック関数

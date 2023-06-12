@@ -23,5 +23,5 @@ Matrix4x4 MakeRotateYMatrix(float radion);
 // アフィン変換
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
 
-
+Matrix4x4 Inverse(const Matrix4x4& m);
 

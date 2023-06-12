@@ -13,6 +13,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete skydome_;
 	delete modelSkydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
@@ -32,10 +33,10 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(model_,textureHandle_);
+	Vector3 playerPos(0, 0, 50);
+	player_->Initialize(model_,textureHandle_,playerPos);
 	
-	//敵キャラの初期化
-	//enemy_->Initialize(model_,textureHandle_)
+	
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1270, 820);
 	//軸方向の表示を有効にする
@@ -52,12 +53,16 @@ void GameScene::Initialize() {
 	//背景
 	skydome_ = new Skydome();
 	skydome_->Initializa(modelSkydome_);
-
+	//レールカメラ
+	railCamera_ = new RailCamera();
+	railCamera_->Initializ(worldTransform_.translation_,worldTransform_.rotation_);
+	player_->SetParent(&railCamera_->GetWorldTransform());
 }
 
 void GameScene::Update() {
 	player_->Update();
 	skydome_->Update();
+	railCamera_->Update();
 
 	debugCamera_->Update();
 #ifdef _DEBUG
@@ -73,10 +78,16 @@ void GameScene::Update() {
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
 	} else {
+		// レールカメラ
 		viewProjection_.UpdateMatrix();
+		viewProjection_.matView = railCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+		viewProjection_.TransferMatrix();
 	}
 
 	
+	
+
 	enemy_->Update();
 	
 

@@ -12,6 +12,7 @@
 #include "DebugCamera.h"
 #include "Enemy.h"
 #include "Skydome.h"
+#include "RailCamera.h"
 
 
 /// <summary>
@@ -77,7 +78,8 @@ private: // メンバ変数
 	//背景
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-	
+	//レールカメラ
+	RailCamera* railCamera_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

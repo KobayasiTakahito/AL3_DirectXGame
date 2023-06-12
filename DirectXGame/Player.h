@@ -8,7 +8,7 @@
 class Player {
 public:
 	//初期化
-	void Initialize(Model* model,uint32_t &textureHandle);
+	void Initialize(Model* model, uint32_t& textureHandle, Vector3 pos);
 
 	//更新
 	void Update();
@@ -25,6 +25,7 @@ public:
 	//衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+	void SetParent(const WorldTransform* parent);
 
 	/// <summary>
 	/// 攻撃

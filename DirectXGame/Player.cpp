@@ -5,7 +5,7 @@
 #include "ImGuiManager.h"
 
 
-void Player::Initialize(Model* model, uint32_t &textureHandle) {
+void Player::Initialize(Model* model, uint32_t &textureHandle ,Vector3 pos) {
 	//NULLポインタチェック
 	assert(model);
 	model_ = model;
@@ -13,7 +13,7 @@ void Player::Initialize(Model* model, uint32_t &textureHandle) {
 	worldTransform_.Initialize();
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
-
+	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, pos);
 	
 }
 
@@ -120,7 +120,8 @@ void Player::Attack() {
 
 	//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,Velocity);
+		
+		newBullet->Initialize(model_, GetWorldPos(), Velocity);
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 
@@ -147,9 +148,9 @@ Vector3 Player::GetWorldPos() {
 
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform_.translation_.x;
-	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
 }
@@ -157,3 +158,5 @@ Vector3 Player::GetWorldPos() {
 void Player::OnCollision() {
 
 }
+
+void Player::SetParent(const WorldTransform* parent){ worldTransform_.parent_ = parent; }
