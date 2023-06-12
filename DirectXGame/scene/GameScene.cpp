@@ -86,12 +86,6 @@ void GameScene::Update() {
 		viewProjection_.TransferMatrix();
 	}
 
-	
-	
-
-	
-
-	
 }
 
 void GameScene::CheckAllColision() { 
