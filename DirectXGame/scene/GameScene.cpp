@@ -2,13 +2,15 @@
 #include "TextureManager.h"
 #include <cassert>
 #include "AxisIndicator.h"
-
+#include <fstream>
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete player_;
-	delete enemy_;
+	for (Enemy* enemy : enemy_) {
+		delete enemy;
+	}
 	delete model_;
 	delete debugCamera_;
 	delete skydome_;
@@ -17,7 +19,7 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
-
+	loadEnemyPopData();
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -36,20 +38,13 @@ void GameScene::Initialize() {
 	Vector3 playerPos(0, 0, 50);
 	player_->Initialize(model_,textureHandle_,playerPos);
 	
-	
+	enemyPop(Vector3(0.0f,0.0f,5.0f));
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1270, 820);
 	//軸方向の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
-	//// 敵キャラ
-	const float kEnemySpeed = -0.1f;
-	Vector3 Velocity(0, 0, kEnemySpeed);
-	Enemy* newEnemy = new Enemy();
-	newEnemy->Initialize(model_, worldTransform_.translation_, Velocity);
-	enemy_ = newEnemy;
-	enemy_->SetPlayer(player_);
-	enemy_->SetGameScene(this);
+	
 	//背景
 	skydome_ = new Skydome();
 	skydome_->Initializa(modelSkydome_);
@@ -63,7 +58,10 @@ void GameScene::Update() {
 	skydome_->Update();
 	railCamera_->Update();
 	player_->Update();
-	enemy_->Update();
+	updateEnemyPopCommands();
+	for (Enemy* enemy : enemy_) {
+		enemy->Update();
+	}
 	for (EnemyBullet* bullet : bullets_) {
 
 		bullet->Update();
@@ -147,8 +145,10 @@ void GameScene::Draw() {
 	Model::PreDraw(commandList);
 	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
+	for (Enemy* enemy : enemy_) {
+		enemy->Draw(viewProjection_);
+	}
 	
-	enemy_->Draw(viewProjection_);
 	for (EnemyBullet* bullet : bullets_) {
 
 		bullet->Draw(viewProjection_);
@@ -180,3 +180,83 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	//リストに追加	
 	bullets_.push_back(enemyBullet);
 }
+
+void GameScene::enemyPop(Vector3 vec) {
+	//// 敵キャラ
+	const float kEnemySpeed = -0.1f;
+	Vector3 Velocity(0, 0, kEnemySpeed);
+	Enemy* newEnemy = new Enemy();
+	newEnemy->Initialize(model_, Vec3Add(worldTransform_.translation_, vec), Velocity);
+	enemy_.push_back(newEnemy);
+	for (Enemy* enemy : enemy_) {
+		enemy->SetPlayer(player_);
+		enemy->SetGameScene(this);
+	}
+}
+
+void GameScene::loadEnemyPopData() { 
+	std::ifstream file;
+	file.open("ENEMY.csv");
+	assert(file.is_open());
+	//ファイルの内容を文字列ストリームにコピー
+	enemyPopCommands << file.rdbuf();
+	//ファイルを閉じる
+	file.close();
+	
+}
+void GameScene::updateEnemyPopCommands() {
+	//待機処理
+	if (stopF) {
+		timer--;
+		if (timer <= 0) {
+			stopF = false;
+		}
+		return;
+	}
+	
+	//1行文の文字列を入れる変数
+	std::string line;
+	
+	//コマンド実行ループ
+	while (std::getline(enemyPopCommands,line)) {
+		//１行枌尾文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+		
+		std::string word;
+		//,区切りで行の先頭文字列を取得
+		std::getline(line_stream, word, ',');
+		//"//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			continue;
+		}
+		//POPコマンド
+		if (word.find("POP") == 0) {
+		 std::getline(line_stream, word, ',');
+		float x = (float)std::atof(word.c_str());
+		 
+		std::getline(line_stream, word, ',');
+		 float y = (float)std::atof(word.c_str());
+
+		  std::getline(line_stream, word, ',');
+		 float z = (float)std::atof(word.c_str());
+		
+		 //敵を発生させる
+		 enemyPop(Vector3(x, y, z));
+		} else if (word.find("WAIT") == 0) {
+		 std::getline(line_stream, word, ',');
+
+		 //待ち時間
+		 int32_t waitTime = atoi(word.c_str());
+
+		 //待機開始
+		 stopF = true;
+		 timer = waitTime;
+
+		 break;
+		}
+
+	}
+	
+}
+
+void GameScene::AddEnemy(Enemy* enemy) { enemy_.push_back(enemy); }
