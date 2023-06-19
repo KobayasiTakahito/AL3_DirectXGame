@@ -5,12 +5,15 @@
 #include "ImGuiManager.h"
 
 
-void Player::Initialize(Model* model, uint32_t &textureHandle ,Vector3 pos) {
+void Player::Initialize(Model* model, Model* model2, uint32_t& textureHandle, Vector3 pos) {
 	//NULLポインタチェック
 	assert(model);
 	model_ = model;
+	model2_ = model2;
 	texturehandle_ = textureHandle;
 	worldTransform_.Initialize();
+	worldTransform3DReticle_.Initialize();
+	worldTransform3DReticle_.scale_ = {5,5,5}; 
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, pos);
@@ -33,16 +36,22 @@ void Player::Update() {
 
 
 	float imputFloat3[3] = {
-	    worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z};
-
+	    worldTransform_.matWorld_.m[3][0], worldTransform_.matWorld_.m[3][1],
+	    worldTransform_.matWorld_.m[3][2]};
+	float worldReticle[3] = {
+	    worldTransform3DReticle_.matWorld_.m[3][0], worldTransform3DReticle_.matWorld_.m[3][1],
+	    worldTransform3DReticle_.matWorld_.m[3][2]};
 	// デバッグ
 	ImGui::Begin("Debug");
 	ImGui::SliderFloat3("player", imputFloat3, -30.0f, 30.0f);
+	ImGui::SliderFloat3("Reticle", worldReticle, -30.0f, 30.0f);
 	ImGui::End();
-	worldTransform_.translation_.x = imputFloat3[0];
-	worldTransform_.translation_.y = imputFloat3[1];
-	worldTransform_.translation_.z = imputFloat3[2];
+	worldTransform_.matWorld_.m[3][0] = imputFloat3[0];
+	worldTransform_.matWorld_.m[3][1] = imputFloat3[1];
+	worldTransform_.matWorld_.m[3][2] = imputFloat3[2];
+	worldTransform3DReticle_.matWorld_.m[3][0] = imputFloat3[0];
+	worldTransform3DReticle_.matWorld_.m[3][1] = imputFloat3[1];
+	worldTransform3DReticle_.matWorld_.m[3][2] = imputFloat3[2];
 
 	//押した方向で移動ベクトルを変更（左右）
 	if (input_->PushKey(DIK_LEFT)) {
@@ -82,7 +91,21 @@ void Player::Update() {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-	
+	//自機のワールド座標から３Dレティクルのワールド座標を計算
+	const float kDistancePlayerTo3DReticle = 500.0f;
+	//自機から３Dレティクルへのオフセット（ｚ＋向き）
+	Vector3 offest = {0, 0, 1.0f};
+	//自機のワールド行列の回転を反映
+	offest = Transform(offest, worldTransform_.matWorld_);
+	//ベクトルの長さを変える
+	offest = Multiply(kDistancePlayerTo3DReticle, Normalise(offest));
+	Vector3 n = GetWorldPos();
+	//３Ｄレティクルの座標を設定
+	worldTransform3DReticle_.translation_ = Vec3Add(GetWorldPos(), offest);
+	worldTransform3DReticle_.UpdateMatrix();
+
+
+
 
 }
 
@@ -130,13 +153,14 @@ void Player::Attack() {
 // 描画
 void Player::Draw(ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, texturehandle_);
+	model2_->Draw(worldTransform3DReticle_, viewprojection,texturehandle_);
+	
 	if (bullet_) {
 		//bullet_->Draw(viewprojection);
 		for (PlayerBullet* bullet : bullets_) {
 			bullet->Draw(viewprojection);
 		}
 	}
-	
 	
 }
 

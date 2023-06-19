@@ -31,12 +31,13 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	//3Dモデルの生成
 	model_ = Model::Create();
+	model2_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("tama", true);
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
 	Vector3 playerPos(0, 0, 50);
-	player_->Initialize(model_,textureHandle_,playerPos);
+	player_->Initialize(model_,model2_,textureHandle_,playerPos);
 	
 	enemyPop(Vector3(0.0f,0.0f,5.0f));
 	//デバッグカメラの生成
@@ -70,7 +71,8 @@ void GameScene::Update() {
 	debugCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
-		isDebugcameraActive_ = true;
+		isDebugcameraActive_ = !isDebugcameraActive_;
+
 	}
 
 #endif // DEBUG
@@ -143,7 +145,7 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
-	skydome_->Draw(viewProjection_);
+	//skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	for (Enemy* enemy : enemy_) {
 		enemy->Draw(viewProjection_);

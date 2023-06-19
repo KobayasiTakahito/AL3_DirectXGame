@@ -25,3 +25,7 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 
 Matrix4x4 Inverse(const Matrix4x4& m);
 
+float Dot(const Vector3& v1, const Vector3& v2);
+float Length(const Vector3& v);
+Vector3 Normalise(const Vector3& v);
+

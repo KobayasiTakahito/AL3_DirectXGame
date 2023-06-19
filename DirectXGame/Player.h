@@ -8,7 +8,7 @@
 class Player {
 public:
 	//初期化
-	void Initialize(Model* model, uint32_t& textureHandle, Vector3 pos);
+	void Initialize(Model* model, Model* model2, uint32_t& textureHandle, Vector3 pos);
 
 	//更新
 	void Update();
@@ -39,8 +39,11 @@ public:
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
+	//３Ｄレティクル用
+	WorldTransform worldTransform3DReticle_;
 	//モデル
 	Model* model_ = nullptr;
+	Model* model2_ = nullptr;
 	//テクスチャハンドル
 	uint32_t texturehandle_ = 0u;
 	//自キャラ

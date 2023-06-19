@@ -93,6 +93,7 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	//３Dモデル
 	Model* model_ = nullptr;
+	Model* model2_ = nullptr;
 	//デバッグカメラ有効
 	bool isDebugcameraActive_ = false;
 	//デバッグカメラの生成

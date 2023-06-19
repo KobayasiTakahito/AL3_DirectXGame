@@ -3,6 +3,7 @@
 #include"Vector3.h"
 #include<cmath>
 #include<cassert>
+#include<numbers>
 
 // Matrix4x4 積
 Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2) {
@@ -294,4 +295,14 @@ Matrix4x4 Inverse(const Matrix4x4& m) {
 	                  m.m[0][1] * m.m[1][0] * m.m[2][2] - m.m[0][0] * m.m[1][2] * m.m[2][1]) /
 	                 determinant;
 	return result;
+}
+//正規化
+float Dot(const Vector3& v1, const Vector3& v2) { return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z; }
+float Length(const Vector3& v) { return sqrtf(Dot(v, v)); }
+Vector3 Normalise(const Vector3& v) {
+	float len = Length(v);
+	if (len != 0) {
+		return {v.x / len, v.y / len, v.z / len};
+	}
+	return v;
 }
