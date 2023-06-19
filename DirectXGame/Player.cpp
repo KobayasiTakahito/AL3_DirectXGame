@@ -13,7 +13,7 @@ void Player::Initialize(Model* model, Model* model2, uint32_t& textureHandle, Ve
 	texturehandle_ = textureHandle;
 	worldTransform_.Initialize();
 	worldTransform3DReticle_.Initialize();
-	worldTransform3DReticle_.scale_ = {5,5,5}; 
+	
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, pos);
@@ -92,11 +92,11 @@ void Player::Update() {
 		bullet->Update();
 	}
 	//自機のワールド座標から３Dレティクルのワールド座標を計算
-	const float kDistancePlayerTo3DReticle = 500.0f;
+	const float kDistancePlayerTo3DReticle = 50.0f;
 	//自機から３Dレティクルへのオフセット（ｚ＋向き）
 	Vector3 offest = {0, 0, 1.0f};
 	//自機のワールド行列の回転を反映
-	offest = Transform(offest, worldTransform_.matWorld_);
+	offest = TransformNormal(offest, worldTransform_.matWorld_);
 	//ベクトルの長さを変える
 	offest = Multiply(kDistancePlayerTo3DReticle, Normalise(offest));
 	Vector3 n = GetWorldPos();
