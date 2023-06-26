@@ -3,6 +3,7 @@
 #include <cassert>
 #include<world.h>
 #include "ImGuiManager.h"
+#include "Sprite.h"
 
 
 void Player::Initialize(Model* model, Model* model2, uint32_t& textureHandle, Vector3 pos) {
@@ -13,17 +14,24 @@ void Player::Initialize(Model* model, Model* model2, uint32_t& textureHandle, Ve
 	texturehandle_ = textureHandle;
 	worldTransform_.Initialize();
 	worldTransform3DReticle_.Initialize();
-	
 	//シングルインスタンスを取得する
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = Vec3Add(worldTransform_.translation_, pos);
+	//レティクル用テクスチャ取得
+	uint32_t textureReticle = TextureManager::Load("reticle.png");
+	sprite2DReticle_ = Sprite::Create(
+	    textureReticle,
+	    Vector2(worldTransform_.translation_.x + pos.x, worldTransform_.translation_.y + pos.y),
+	    Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+	    Vector2(0.5f, 0.5f));
+	
 	
 }
 
 
 	
 // 更新
-void Player::Update() {
+void Player::Update(const ViewProjection viewporjection) {
 	//キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 	
@@ -103,10 +111,16 @@ void Player::Update() {
 	//３Ｄレティクルの座標を設定
 	worldTransform3DReticle_.translation_ = Vec3Add(GetWorldPos(), offest);
 	worldTransform3DReticle_.UpdateMatrix();
-
-
-
-
+	//3Dレティクルのワールド座標から２Dレティクルのスクリーン座標を計算
+	Vector3 positionReticle = worldTransform3DReticle_.translation_;
+	//ビューポート行列
+	Matrix4x4 matViewport =
+	    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	//ビュー行列とプロジェクション行列、ビューポート行列を合成
+	Matrix4x4 matViewProjectionViewport =
+	    Multiply(Multiply(viewporjection.matView, viewporjection.matProjection), matViewport);
+	positionReticle = Transform(positionReticle, matViewProjectionViewport);
+	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 }
 
 //旋回
@@ -127,6 +141,7 @@ Player::~Player() {
 		delete bullet;
 		bullet = nullptr;
 	}
+	delete sprite2DReticle_;
 }
 
 //攻撃
@@ -136,7 +151,9 @@ void Player::Attack() {
 		//弾の速度
 		const float kBulletSpeed = 1.0f;
 		Vector3 Velocity(0, 0, kBulletSpeed);
-		Velocity = TransformNormal(Velocity, worldTransform_.matWorld_);
+		Velocity = Vec3Sub(worldTransform3DReticle_.translation_, worldTransform_.translation_);
+
+		Velocity = Multiply(kBulletSpeed,Vec3Normalize(Velocity));
 
 	//弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
@@ -178,6 +195,10 @@ Vector3 Player::GetWorldPos() {
 // 衝突を検出したら呼び出されるコールバック関数
 void Player::OnCollision() {
 
+}
+
+void Player::DrawUI() { 
+	sprite2DReticle_->Draw();
 }
 
 void Player::SetParent(const WorldTransform* parent){ worldTransform_.parent_ = parent; }

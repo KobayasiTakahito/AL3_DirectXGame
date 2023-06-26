@@ -5,13 +5,15 @@
 #include "PlayerBullet.h"
 #include <list>
 #include "Enemy.h"
+#include "Sprite.h"
+
 class Player {
 public:
 	//初期化
 	void Initialize(Model* model, Model* model2, uint32_t& textureHandle, Vector3 pos);
 
 	//更新
-	void Update();
+	void Update(const ViewProjection viewporjection);
 
 	//描画
 	void Draw(ViewProjection &viewprojection);
@@ -35,12 +37,20 @@ public:
 	//弾
 	std::list<PlayerBullet*> bullets_;
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
-	
+
+	/// <summary>
+	/// UI描画
+	/// </summary>
+	void DrawUI();
+
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 	//３Ｄレティクル用
 	WorldTransform worldTransform3DReticle_;
+	//２Dレティクル用スプライト
+	Sprite* sprite2DReticle_ = nullptr; 
 	//モデル
 	Model* model_ = nullptr;
 	Model* model2_ = nullptr;

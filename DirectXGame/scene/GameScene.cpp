@@ -37,6 +37,8 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	Vector3 playerPos(0, 0, 50);
+	//レティクルのテクスチャ
+	TextureManager::Load("reticle.png");
 	player_->Initialize(model_,model2_,textureHandle_,playerPos);
 	
 	enemyPop(Vector3(0.0f,0.0f,5.0f));
@@ -58,7 +60,7 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 	skydome_->Update();
 	railCamera_->Update();
-	player_->Update();
+	player_->Update(viewProjection_);
 	updateEnemyPopCommands();
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
@@ -130,9 +132,11 @@ void GameScene::Draw() {
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
+
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	
 
 
 
@@ -145,7 +149,7 @@ void GameScene::Draw() {
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
-	//skydome_->Draw(viewProjection_);
+	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	for (Enemy* enemy : enemy_) {
 		enemy->Draw(viewProjection_);
@@ -171,6 +175,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	player_->DrawUI();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
