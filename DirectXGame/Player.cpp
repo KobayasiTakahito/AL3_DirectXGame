@@ -150,10 +150,20 @@ void Player::Update(const ViewProjection viewporjection) {
 	mouseDirection = Normalise(mouseDirection);
 
 	//カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 30;
-	worldTransform3DReticle_.translation_ = Multiply(kDistanceTestObject, mouseDirection);
+	const float kDistanceTestObject = 100;
+	worldTransform3DReticle_.translation_ =
+	    Multiply(kDistanceTestObject, Vec3Sub(mouseDirection, posNear));
 
 	worldTransform3DReticle_.UpdateMatrix();
+	ImGui::Begin("Player");
+	ImGui::Text("2DReticle:(%f,%f)", mousePosition.x,mousePosition.y);
+	ImGui::Text("Near:(%+.2f,%+.2f,%.2f)", posNear.x, posNear.y, posNear.z);
+	ImGui::Text("Far:(%+.2f,%+.2f,%.2f)", posFar.x, posFar.y, posFar.z);
+	ImGui::Text(
+	    "3DRetixle:(%+.2f,%+.2f,%.2f)", worldTransform3DReticle_.translation_.x,
+	    worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
+
+	ImGui::End();
 }
 
 
