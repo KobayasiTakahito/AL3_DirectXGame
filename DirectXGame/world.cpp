@@ -321,7 +321,7 @@ Matrix4x4 MakeViewportMatrix(
 	result.m[2][0] = 0.0f;
 	result.m[2][1] = 0.0f;
 	result.m[2][2] = maxDepth - minDepth;
-	result.m[0][3] = 0.0f;
+	result.m[2][3] = 0.0f;
 
 	result.m[3][0] = left + (width / 2);
 	result.m[3][1] = top + (height / 2);
