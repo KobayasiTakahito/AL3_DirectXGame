@@ -58,16 +58,18 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	skydome_->Update();
 	railCamera_->Update();
 	player_->Update(viewProjection_);
+	skydome_->Update();
 	updateEnemyPopCommands();
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
+		
 	}
 	for (EnemyBullet* bullet : bullets_) {
 
 		bullet->Update();
+		
 	}
 
 	debugCamera_->Update();
@@ -152,12 +154,14 @@ void GameScene::Draw() {
 	skydome_->Draw(viewProjection_);
 	player_->Draw(viewProjection_);
 	for (Enemy* enemy : enemy_) {
+		
 		enemy->Draw(viewProjection_);
 	}
 	
 	for (EnemyBullet* bullet : bullets_) {
-
+		
 		bullet->Draw(viewProjection_);
+		
 	}
 
 	/// <summary>

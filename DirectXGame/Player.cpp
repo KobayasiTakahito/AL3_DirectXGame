@@ -32,6 +32,16 @@ void Player::Initialize(Model* model, Model* model2, uint32_t& textureHandle, Ve
 	
 // 更新
 void Player::Update(const ViewProjection viewporjection) {
+
+	// デスフラグが立った弾を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 	//キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 	
@@ -54,27 +64,6 @@ void Player::Update(const ViewProjection viewporjection) {
 	ImGui::SliderFloat3("player", imputFloat3, -30.0f, 30.0f);
 	ImGui::SliderFloat3("Reticle", worldReticle, -30.0f, 30.0f);
 	ImGui::End();
-	//worldTransform_.matWorld_.m[3][0] = imputFloat3[0];
-	//worldTransform_.matWorld_.m[3][1] = imputFloat3[1];
-	//worldTransform_.matWorld_.m[3][2] = imputFloat3[2];
-	//worldTransform3DReticle_.matWorld_.m[3][0] = imputFloat3[0];
-	//worldTransform3DReticle_.matWorld_.m[3][1] = imputFloat3[1];
-	//worldTransform3DReticle_.matWorld_.m[3][2] = imputFloat3[2];
-
-
-	//キーボード操作の場合
-	//押した方向で移動ベクトルを変更（左右）
-	//if (input_->PushKey(DIK_LEFT)) {
-	//	move.x -= kChracterSpeed;
-	//} else if (input_->PushKey(DIK_RIGHT)) {
-	//	move.x += kChracterSpeed;
-	//}
-	////押した方向で移動ベクトルを変更（上下）
-	//if (input_->PushKey(DIK_UP)) {
-	//	move.y -= kChracterSpeed;
-	//} else if (input_->PushKey(DIK_DOWN)) {
-	//	move.y += kChracterSpeed;
-	//}
 	
 	//ゲームパッド
 	XINPUT_STATE joystate;
@@ -105,9 +94,7 @@ void Player::Update(const ViewProjection viewporjection) {
 	Player::Attack();
 	
 
-	if (bullet_) {
-		bullet_->Update();
-	}
+	
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
@@ -135,19 +122,6 @@ void Player::Update(const ViewProjection viewporjection) {
 	positionReticle = Transform(positionReticle, matViewProjectionViewport);
 	
 
-	//レティクルがマウスの場合
-	//POINT mousePosition;
-	//マウス座標（スクリーン座標）を取得する
-	//GetCursorPos(&mousePosition);
-
-	//クライアントエリア座標（スクリーン座標）に変換する
-	//HWND hwnd = WinApp::GetInstance()->GetHwnd();
-	/*ScreenToClient(hwnd, &mousePosition);
-	sprite2DReticle_->SetPosition(Vector2(float(mousePosition.x), float (mousePosition.y)));*/
-	
-	//ゲームパッドの場合
-	//スプライトの現在座標を取得
-	
 	Vector2 spritePostition = sprite2DReticle_->GetPosition();
 	if (Input::GetInstance()->GetJoystickState(0, joystate)) {
 		spritePostition.x += (float)joystate.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
@@ -182,14 +156,7 @@ void Player::Update(const ViewProjection viewporjection) {
 	    Vec3Add(posNear, Multiply(kDistanceTestObject,mouseDirection));
 
 	worldTransform3DReticle_.UpdateMatrix();
-	/*ImGui::Begin("Player");
-	ImGui::Text("2DReticle:(%f,%f)", mousePosition.x,mousePosition.y);
-	ImGui::Text("Near:(%+.2f,%+.2f,%.2f)", posNear.x, posNear.y, posNear.z);
-	ImGui::Text("Far:(%+.2f,%+.2f,%.2f)", posFar.x, posFar.y, posFar.z);
-	ImGui::Text(
-	    "3DRetixle:(%+.2f,%+.2f,%.2f)", worldTransform3DReticle_.translation_.x,
-	    worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
-	ImGui::End();*/
+	
 }
 
 
@@ -217,24 +184,7 @@ Player::~Player() {
 //攻撃
 void Player::Attack() { 
 	XINPUT_STATE joystate;
-	//if (input_->PushKey(DIK_SPACE)) {
-	//
-	//	//弾の速度
-	//	const float kBulletSpeed = 1.0f;
-	//	Vector3 Velocity(0, 0, kBulletSpeed);
-	//	Velocity = Vec3Sub(worldTransform3DReticle_.translation_, worldTransform_.translation_);
 
-	//	Velocity = Multiply(kBulletSpeed,Vec3Normalize(Velocity));
-
-	////弾を生成し、初期化
-	//	PlayerBullet* newBullet = new PlayerBullet();
-	//	
-	//	newBullet->Initialize(model_, GetWorldPos(), Velocity);
-	//	// 弾を登録する
-	//	bullets_.push_back(newBullet);
-
-	//	bullet_ = newBullet;
-	//}
 
 	if (!Input::GetInstance()->GetJoystickState(0, joystate)) {
 		return;

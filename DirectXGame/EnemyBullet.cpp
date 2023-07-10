@@ -30,6 +30,7 @@ void EnemyBullet::Update() {
 	if (--dethTimer_ <= 0) {
 		isDead_ = true;
 	}
+
 }
 
 void EnemyBullet::Draw(const ViewProjection& viewProjection) {
