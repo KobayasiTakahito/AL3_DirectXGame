@@ -97,6 +97,4 @@ Vector3 Enemy::GetWorldPosition() {
 	    return worldPos;
 }
 // 衝突を検出したら呼び出されるコールバック関数
-void Enemy::OnCollision() {
-
-}
+void Enemy::OnCollision() { isDead_ = true; }

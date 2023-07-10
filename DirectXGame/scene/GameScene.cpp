@@ -62,6 +62,23 @@ void GameScene::Update() {
 	player_->Update(viewProjection_);
 	skydome_->Update();
 	updateEnemyPopCommands();
+	CheckAllColision();
+	enemy_.remove_if([](Enemy* enemy) { 
+		if (enemy->IsDead()) {
+		delete enemy;
+			return true;
+		}
+		return false;
+	});
+
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
+
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
 		
@@ -101,7 +118,7 @@ void GameScene::CheckAllColision() {
 	Vector3 posA, posB;
 
 	//自弾リストの取得
-	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	//敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = GetBullets();
 
@@ -110,9 +127,20 @@ void GameScene::CheckAllColision() {
 
 	for (EnemyBullet* bullet : enemyBullets) {
 		posB = bullet->GetWorldPosition();
-		if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.x), 2) + pow((posB.z - posA.z), 2) >=pow(2, 2)) {
+		if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.y), 2) + pow((posB.z - posA.z), 2) <=pow(3, 2)) {
 			player_->OnCollision();
 			bullet->OnCollision();
+		}
+	}
+	for (Enemy* enemy : enemy_) {
+		posB = enemy->GetWorldPosition();
+		for (PlayerBullet* bullet : playerBullets) {
+			posA = bullet->GetWorldPosition();
+			if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.y), 2) + pow((posB.z - posA.z), 2) <=
+			    pow(3, 2)) {
+				bullet->OnCollision();
+				enemy->OnCollision();
+			}
 		}
 	}
 	#pragma endregion

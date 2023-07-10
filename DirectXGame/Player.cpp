@@ -99,7 +99,7 @@ void Player::Update(const ViewProjection viewporjection) {
 		bullet->Update();
 	}
 	//自機のワールド座標から３Dレティクルのワールド座標を計算
-	const float kDistancePlayerTo3DReticle = 50.0f;
+	const float kDistancePlayerTo3DReticle = 30.0f;
 	//自機から３Dレティクルへのオフセット（ｚ＋向き）
 	Vector3 offest = {0, 0, 1.0f};
 	//自機のワールド行列の回転を反映

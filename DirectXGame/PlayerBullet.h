@@ -17,6 +17,7 @@ public:
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
+	Vector3 GetWorldPosition(); 
 
 	private:
 

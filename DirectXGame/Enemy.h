@@ -37,6 +37,8 @@ public:
 
 	static const int kFireInterval = 60;
 
+	bool IsDead() const { return isDead_; }
+
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 	
 private:
@@ -52,6 +54,9 @@ private:
 	
 	//発射タイマー
 	int32_t FireTimer_ = 0;
+
+	//デスフラグ
+	bool isDead_ = false;
 
 	//自キャラ
 	Player* player_ = nullptr;
