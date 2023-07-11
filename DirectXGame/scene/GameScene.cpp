@@ -36,7 +36,7 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	Vector3 playerPos(0, 0, 50);
+	Vector3 playerPos(0, 0, 30);
 	//レティクルのテクスチャ
 	TextureManager::Load("reticle.png");
 	player_->Initialize(model_,model2_,textureHandle_,playerPos);

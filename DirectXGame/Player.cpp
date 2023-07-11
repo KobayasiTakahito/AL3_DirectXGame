@@ -49,8 +49,8 @@ void Player::Update(const ViewProjection viewporjection) {
 	//キャラクターの移動速度
 	const float kChracterSpeed = 0.3f;
 	//移動限界
-	const float kMoveLimiX = 30.0f;
-	const float kMoveLimiY = 18.0f;
+	const float kMoveLimiX = 20.0f;
+	const float kMoveLimiY = 10.0f;
 
 
 	float imputFloat3[3] = {
@@ -217,7 +217,7 @@ void Player::Attack() {
 // 描画
 void Player::Draw(ViewProjection& viewprojection) {
 	model_->Draw(worldTransform_, viewprojection, texturehandle_);
-	model2_->Draw(worldTransform3DReticle_, viewprojection,texturehandle_);
+	//model2_->Draw(worldTransform3DReticle_, viewprojection,texturehandle_);
 	
 	if (bullet_) {
 		//bullet_->Draw(viewprojection);
