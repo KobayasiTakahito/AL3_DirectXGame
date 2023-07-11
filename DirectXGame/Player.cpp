@@ -189,7 +189,7 @@ void Player::Attack() {
 	if (!Input::GetInstance()->GetJoystickState(0, joystate)) {
 		return;
 	}
-
+	fireTime_--;
 	if (joystate.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
@@ -198,16 +198,20 @@ void Player::Attack() {
 		Velocity = Vec3Sub(worldTransform3DReticle_.translation_, GetWorldPos());
 
 		Velocity = Multiply(kBulletSpeed, Vec3Normalize(Velocity));
-
+		
 		// 弾を生成し、初期化
-		PlayerBullet* newBullet = new PlayerBullet();
+		if (fireTime_ <= 0) {
 
-		newBullet->Initialize(model_, GetWorldPos(), Velocity);
-		// 弾を登録する
-		bullets_.push_back(newBullet);
+			PlayerBullet* newBullet = new PlayerBullet();
 
-		bullet_ = newBullet;
-	}
+			newBullet->Initialize(model_, GetWorldPos(), Velocity);
+			// 弾を登録する
+			bullets_.push_back(newBullet);
+
+			bullet_ = newBullet;
+			fireTime_ = 30;
+		}
+	} 
 }
 
 // 描画

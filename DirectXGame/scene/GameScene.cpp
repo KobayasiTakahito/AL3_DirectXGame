@@ -222,7 +222,7 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::enemyPop(Vector3 vec) {
 	//// 敵キャラ
-	const float kEnemySpeed = -0.1f;
+	const float kEnemySpeed = -0.02f;
 	Vector3 Velocity(0, 0, kEnemySpeed);
 	Enemy* newEnemy = new Enemy();
 	newEnemy->Initialize(model_, Vec3Add(worldTransform_.translation_, vec), Velocity);

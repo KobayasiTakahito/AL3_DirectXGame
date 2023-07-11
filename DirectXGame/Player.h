@@ -62,6 +62,7 @@ private:
 	Input* input_ = nullptr;
 	//弾
 	PlayerBullet* bullet_ = nullptr;
+	int fireTime_ = 0;
 	//敵
 	Enemy* enemy_ = nullptr;
 	
