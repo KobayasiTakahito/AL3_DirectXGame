@@ -126,6 +126,7 @@ void Player::Update(const ViewProjection viewporjection) {
 	if (Input::GetInstance()->GetJoystickState(0, joystate)) {
 		spritePostition.x += (float)joystate.Gamepad.sThumbRX / SHRT_MAX * 5.0f;
 		spritePostition.y -= (float)joystate.Gamepad.sThumbRY / SHRT_MAX * 5.0f;
+	
 		//スプライトの座標変更を反映
 		sprite2DReticle_->SetPosition(spritePostition);
 	}
@@ -151,7 +152,7 @@ void Player::Update(const ViewProjection viewporjection) {
 	mouseDirection = Normalise(mouseDirection);
 
 	//カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 100;
+	const float kDistanceTestObject = 90;
 	worldTransform3DReticle_.translation_ =
 	    Vec3Add(posNear, Multiply(kDistanceTestObject,mouseDirection));
 

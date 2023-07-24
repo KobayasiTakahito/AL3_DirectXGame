@@ -14,6 +14,7 @@
 #include "Skydome.h"
 #include "RailCamera.h"
 #include <sstream>
+#include <EnergyPack.h>
 
 
 /// <summary>
@@ -60,7 +61,12 @@ public: // メンバ関数
 	void AddEnemyBullet(EnemyBullet* enemyBullet);
 	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 
-	
+	/// <summary>
+	/// エネルギーを追加
+	/// </summary>
+	void AddEnergyPack(EnergyPack* enrgyPack);
+	const std::list<EnergyPack*>& GetEnergys() { return energyPack_; }
+
 	/// <summary>
 	/// 敵を追加
 	/// </summary>
@@ -113,6 +119,8 @@ private: // メンバ変数
 	std::list<EnemyBullet*> bullets_;
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;
+	//エネルギーパック
+	std::list<EnergyPack*> energyPack_;
 
 	//待機関連
 	bool stopF = false;

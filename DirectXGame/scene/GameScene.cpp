@@ -32,7 +32,7 @@ void GameScene::Initialize() {
 	//3Dモデルの生成
 	model_ = Model::Create();
 	model2_ = Model::Create();
-	modelSkydome_ = Model::CreateFromOBJ("tama", true);
+	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
@@ -79,14 +79,23 @@ void GameScene::Update() {
 		return false;
 	});
 
+	energyPack_.remove_if([](EnergyPack* energy) {
+		if (energy->IsDead()) {
+			delete energy;
+			return true;
+		}
+		return false;
+	});
+
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
 		
 	}
 	for (EnemyBullet* bullet : bullets_) {
-
 		bullet->Update();
-		
+	}
+	for (EnergyPack* energy : energyPack_) {
+		energy->Update();
 	}
 
 	debugCamera_->Update();
@@ -121,6 +130,8 @@ void GameScene::CheckAllColision() {
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	//敵弾リストの取得
 	const std::list<EnemyBullet*>& enemyBullets = GetBullets();
+	//エネルギーリストの取得
+	const std::list<EnergyPack*>& energypacks = GetEnergys();
 
 	#pragma region
 	posA = player_->GetWorldPos();
@@ -134,6 +145,11 @@ void GameScene::CheckAllColision() {
 	}
 	for (Enemy* enemy : enemy_) {
 		posB = enemy->GetWorldPosition();
+		posA = player_->GetWorldPos();
+		if (posA.z - 10 >= posB.z) {
+			enemy->OnCollision();
+		}
+
 		for (PlayerBullet* bullet : playerBullets) {
 			posA = bullet->GetWorldPosition();
 			if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.y), 2) + pow((posB.z - posA.z), 2) <=
@@ -220,6 +236,10 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	bullets_.push_back(enemyBullet);
 }
 
+void GameScene::AddEnergyPack(EnergyPack* energyPack) { 
+	//リストに追加
+	energyPack_.push_back(energyPack); }
+
 void GameScene::enemyPop(Vector3 vec) {
 	//// 敵キャラ
 	const float kEnemySpeed = -0.02f;
@@ -268,6 +288,7 @@ void GameScene::updateEnemyPopCommands() {
 		if (word.find("//") == 0) {
 			continue;
 		}
+		Vector3 playerVec = player_->GetWorldPos();
 		//POPコマンド
 		if (word.find("POP") == 0) {
 		 std::getline(line_stream, word, ',');
@@ -277,7 +298,7 @@ void GameScene::updateEnemyPopCommands() {
 		 float y = (float)std::atof(word.c_str());
 
 		  std::getline(line_stream, word, ',');
-		 float z = (float)std::atof(word.c_str());
+		 float z =  playerVec.z + (float)std::atof(word.c_str());
 		
 		 //敵を発生させる
 		 enemyPop(Vector3(x, y, z));
