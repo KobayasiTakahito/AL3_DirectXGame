@@ -73,7 +73,7 @@ public: // メンバ関数
 	void AddEnemy(Enemy* enemy);
 	void enemyPop(Vector3 vec);
 
-
+	void EnerugyPop(Vector3 vec);
 
 	/// <summary>
 	/// 敵発生データの読み込み

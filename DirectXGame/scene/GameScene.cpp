@@ -159,6 +159,19 @@ void GameScene::CheckAllColision() {
 			}
 		}
 	}
+
+	for (EnergyPack* energy : energypacks) {
+		posA = player_->GetWorldPos();
+		posB = energy->GetWorldPosition();
+		if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.y), 2) + pow((posB.z - posA.z), 2) <=
+		    pow(3, 2)) {
+			energy->OnCollision();
+			energy->IsDead();
+			
+		}
+
+	}
+
 	#pragma endregion
 
 	#pragma region
@@ -251,6 +264,18 @@ void GameScene::enemyPop(Vector3 vec) {
 		enemy->SetPlayer(player_);
 		enemy->SetGameScene(this);
 	}
+}
+void GameScene::EnerugyPop(Vector3 vec) {
+	//エネルギー
+	const float kEnrgySpeed = -0.02f;
+	Vector3 Velocity(0, 0, kEnrgySpeed);
+	EnergyPack* newEnergy = new EnergyPack();
+	newEnergy->Initialize(model_, Vec3Add(worldTransform_.translation_, vec), Velocity);
+	energyPack_.push_back(newEnergy);
+	/*for (EnergyPack* energy : energyPack_) {
+		energy->SetPlayer(player_);
+		energy->SetGameScene(this);
+	}*/
 }
 
 void GameScene::loadEnemyPopData() { 
