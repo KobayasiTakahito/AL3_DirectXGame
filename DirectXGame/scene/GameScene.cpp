@@ -89,7 +89,6 @@ void GameScene::Update() {
 
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
-		
 	}
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
@@ -97,12 +96,10 @@ void GameScene::Update() {
 	for (EnergyPack* energy : energyPack_) {
 		energy->Update();
 	}
-
 	debugCamera_->Update();
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_0)) {
 		isDebugcameraActive_ = !isDebugcameraActive_;
-
 	}
 
 #endif // DEBUG
@@ -167,9 +164,15 @@ void GameScene::CheckAllColision() {
 		    pow(3, 2)) {
 			energy->OnCollision();
 			energy->IsDead();
-			
 		}
+		for (PlayerBullet* bullet : playerBullets) {
+			posA = bullet->GetWorldPosition();
+			if (pow((posB.x - posA.x), 2) + pow((posB.y - posA.y), 2) + pow((posB.z - posA.z), 2) <=
+			    pow(3, 2)) {
+				
 
+			}
+		}
 	}
 
 	#pragma endregion
@@ -251,7 +254,8 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::AddEnergyPack(EnergyPack* energyPack) { 
 	//リストに追加
-	energyPack_.push_back(energyPack); }
+	energyPack_.push_back(energyPack); 
+}
 
 void GameScene::enemyPop(Vector3 vec) {
 	//// 敵キャラ

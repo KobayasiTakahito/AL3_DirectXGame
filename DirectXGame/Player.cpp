@@ -24,7 +24,7 @@ void Player::Initialize(Model* model, Model* model2, uint32_t& textureHandle, Ve
 	    Vector2(worldTransform_.translation_.x + pos.x + 640, worldTransform_.translation_.y + pos.y + 360),
 	    Vector4(1.0f, 1.0f, 1.0f, 1.0f),
 	    Vector2(0.5f, 0.5f));
-	
+	HP_ = 100;
 	
 }
 
@@ -152,7 +152,7 @@ void Player::Update(const ViewProjection viewporjection) {
 	mouseDirection = Normalise(mouseDirection);
 
 	//カメラから照準オブジェクトの距離
-	const float kDistanceTestObject = 90;
+	const float kDistanceTestObject = 95;
 	worldTransform3DReticle_.translation_ =
 	    Vec3Add(posNear, Multiply(kDistanceTestObject,mouseDirection));
 
@@ -241,9 +241,13 @@ Vector3 Player::GetWorldPos() {
 	return worldPos;
 }
 // 衝突を検出したら呼び出されるコールバック関数
-void Player::OnCollision() {
-
+void Player::OnCollision() { 
+	HP_ -= 1; 
 }
+
+int Player::HPGetter(int hp) { return hp = HP_; }
+int Player::HPSetter(int hp) { return HP_ = hp; }
+
 
 void Player::DrawUI() { 
 	sprite2DReticle_->Draw();

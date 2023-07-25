@@ -30,6 +30,7 @@ private:
 
 	Vector3 velocity_;
 
+	int healNum_;
 	// 寿命
 	static const int32_t kLifeTime = 60 * 5;
 	// デスタイマー

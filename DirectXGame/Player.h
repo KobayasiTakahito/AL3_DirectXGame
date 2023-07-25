@@ -43,6 +43,8 @@ public:
 	/// </summary>
 	void DrawUI();
 
+	int HPGetter(int hp);
+	int HPSetter(int hp);
 
 private:
 	//ワールド変換データ
@@ -57,7 +59,9 @@ private:
 	//テクスチャハンドル
 	uint32_t texturehandle_ = 0u;
 	//自キャラ
-	
+	int HP_;
+
+
 	//キーボード入植
 	Input* input_ = nullptr;
 	//弾

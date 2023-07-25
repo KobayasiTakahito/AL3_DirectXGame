@@ -52,7 +52,7 @@ void Enemy::Update() {
 	assert(player_);
 		
 		// 弾の速度
-		const float kBulletSpeed = -0.01f;
+		const float kBulletSpeed = -0.001f;
 	Vector3 playerVec = player_->GetWorldPos();
 	Vector3 enemyVec = GetWorldPosition();
 	Vector3 c = Vec3Sub(playerVec, enemyVec);

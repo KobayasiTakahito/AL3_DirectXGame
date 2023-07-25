@@ -35,7 +35,7 @@ public:
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
 
-	static const int kFireInterval = 60;
+	static const int kFireInterval = 100;
 
 	bool IsDead() const { return isDead_; }
 
@@ -53,7 +53,7 @@ private:
 	Phase phase_ = Phase::Approch;
 	
 	//発射タイマー
-	int32_t FireTimer_ = 0;
+	int32_t FireTimer_ = 60;
 
 	//デスフラグ
 	bool isDead_ = false;
